@@ -37,6 +37,7 @@ public class MyListAdapter extends ArrayAdapter<Command> {
 
     public void addCommand(Command c) {
         commandList.add(c);
+        recalculateActiveCommands();
         notifyDataSetChanged();
     }
 
@@ -52,32 +53,16 @@ public class MyListAdapter extends ArrayAdapter<Command> {
 
     @Override
     public View getView(final int i, View view, final ViewGroup viewGroup) {
+        final Command currentCommand = commandList.get(i);
 
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.list_item, null);
         }
 
         TextView tv = (TextView) view.findViewById(R.id.textView);
-        final Command currentCommand = commandList.get(i);
-        final CheckBox cb = (CheckBox) view.findViewById(R.id.checkBox);
-        cb.setChecked(currentCommand.isActive());
+        setCheckBoxes();
         tv.setText(currentCommand.toString());
 
-        if(currentCommand.getCommandType() == CommandType.Absolute && currentCommand.isActive()) {
-            for(int x = 0; x < commandList.size(); x++) {
-                Command c = commandList.get(x);
-                if (c != currentCommand && c.getCommandType() == CommandType.Absolute) {
-                    c.setActive(false);
-                    View childAt = mListView.getChildAt(i);
-                    if(childAt != null) {
-                        CheckBox cb1 = (CheckBox) childAt.findViewById(R.id.checkBox);
-                        if(cb1!=null) {
-                            cb1.setChecked(false);
-                        }
-                    }
-                }
-            }
-        }
 
         TextView mainTextView = (TextView) ((Activity) context).findViewById(R.id.text_view);
         mainTextView.setText(ColorUtils.getColorString(commandList));
@@ -86,21 +71,8 @@ public class MyListAdapter extends ArrayAdapter<Command> {
             @Override
             public void onClick(View view) {
                 currentCommand.setActive(!currentCommand.isActive());
-                if(currentCommand.getCommandType() == CommandType.Absolute && currentCommand.isActive()) {
-                    for(int i = 0; i < commandList.size(); i++) {
-                        Command c = commandList.get(i);
-                        if (c != currentCommand && c.getCommandType() == CommandType.Absolute) {
-                            c.setActive(false);
-                            View childAt = mListView.getChildAt(i);
-                            if(childAt!=null) {
-                                CheckBox cb = (CheckBox) childAt.findViewById(R.id.checkBox);
-                                if(cb!=null) {
-                                    cb.setChecked(false);
-                                }
-                            }
-                        }
-                    }
-                }
+                recalculateActiveCommands();
+                setCheckBoxes();
                 TextView mainTextView = (TextView) ((Activity) context).findViewById(R.id.text_view);
                 mainTextView.setText(ColorUtils.getColorString(commandList));
                 notifyDataSetChanged();
@@ -109,6 +81,26 @@ public class MyListAdapter extends ArrayAdapter<Command> {
         });
 
         return view;
+    }
+
+    private void setCheckBoxes() {
+        for(int x = 0; x < commandList.size(); x++) {
+            mListView.setItemChecked(x, commandList.get(x).isActive());
+        }
+    }
+
+    private void recalculateActiveCommands() {
+        boolean absoluteFound = false;
+        for(int i = commandList.size()-1; i >= 0; i--) {
+            Command c = commandList.get(i);
+            if(c.getCommandType() == CommandType.Absolute && c.isActive()) {
+                if(absoluteFound) {
+                    c.setActive(false);
+                } else {
+                    absoluteFound = true;
+                }
+            }
+        }
     }
 
     @Override
