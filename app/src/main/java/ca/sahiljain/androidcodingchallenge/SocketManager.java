@@ -95,8 +95,6 @@ public class SocketManager {
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                //socket = null;
             }
         }
     }

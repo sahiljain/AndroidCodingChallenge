@@ -1,7 +1,5 @@
 package ca.sahiljain.androidcodingchallenge;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 
 /**
  * Created by Sahil Jain on 15/10/2014.
