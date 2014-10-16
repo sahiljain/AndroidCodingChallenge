@@ -2,7 +2,9 @@
 <resources>
 
     <string name="app_name">AndroidCodingChallenge</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="hello_world">Trying to connect..</string>
+    <string name="action_settings">Set IP</string>
+    <string name="cancel">Cancel</string>
+    <string name="ip_addr">IP Address</string>
 
 </resources>

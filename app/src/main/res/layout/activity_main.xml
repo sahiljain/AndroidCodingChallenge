@@ -9,8 +9,16 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/text_view"
+        android:layout_alignParentTop="true"
         android:text="@string/hello_world"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+        <ListView
+            android:layout_below="@id/text_view"
+            android:id="@+id/list_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"/>
 
 </RelativeLayout>
