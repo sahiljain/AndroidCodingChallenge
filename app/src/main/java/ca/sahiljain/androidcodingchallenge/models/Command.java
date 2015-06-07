@@ -1,7 +1,9 @@
 package ca.sahiljain.androidcodingchallenge.models;
 
 public class Command {
-    private int r, g, b;
+    private final int r;
+    private final int g;
+    private final int b;
     private boolean isActive = true;
     private final CommandType commandType;
 

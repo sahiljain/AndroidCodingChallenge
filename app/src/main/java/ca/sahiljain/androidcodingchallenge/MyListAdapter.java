@@ -12,12 +12,12 @@ import android.widget.TextView;
 import ca.sahiljain.androidcodingchallenge.models.Command;
 import ca.sahiljain.androidcodingchallenge.models.CommandSet;
 
-public class MyListAdapter extends ArrayAdapter<Command> {
+class MyListAdapter extends ArrayAdapter<Command> implements View.OnClickListener {
 
-    private ListView mListView;
+    private final ListView mListView;
 
-    private CommandSet commandSet;
-    private Context context;
+    private final CommandSet commandSet;
+    private final Context context;
 
     public MyListAdapter(Context context, ListView lv, CommandSet commandSet) {
         super(context, R.layout.list_item, commandSet.getList());
@@ -56,17 +56,8 @@ public class MyListAdapter extends ArrayAdapter<Command> {
 
         TextView tv = (TextView) view.findViewById(R.id.textView);
         tv.setText(currentCommand.toString());
-
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                commandSet.toggleActive(i);
-                TextView mainTextView = (TextView) ((Activity) context).findViewById(R.id.text_view);
-                mainTextView.setText(commandSet.getResultColorString());
-                notifyDataSetChanged();
-            }
-        });
-
+        view.setTag(R.id.command_id, i);
+        view.setOnClickListener(this);
         return view;
     }
 
@@ -83,5 +74,14 @@ public class MyListAdapter extends ArrayAdapter<Command> {
     @Override
     public boolean isEmpty() {
         return commandSet.isEmpty();
+    }
+
+    @Override
+    public void onClick(View view) {
+        commandSet.toggleActive((Integer) view.getTag(R.id.command_id));
+        TextView mainTextView = (TextView) ((Activity) context).findViewById(R.id.text_view);
+        mainTextView.setText(commandSet.getResultColorString());
+        mainTextView.setBackgroundColor(commandSet.getResultColor());
+        notifyDataSetChanged();
     }
 }

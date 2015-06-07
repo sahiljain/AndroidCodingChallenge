@@ -15,7 +15,7 @@ import java.net.SocketException;
 import ca.sahiljain.androidcodingchallenge.models.Command;
 import ca.sahiljain.androidcodingchallenge.models.CommandType;
 
-public class SocketManager {
+class SocketManager {
     Socket socket = null;
     boolean isActive = false;
 
@@ -70,6 +70,7 @@ public class SocketManager {
                             public void run() {
                                 adapter.addCommand(fc);
                                 tv.setText(adapter.getCommandSet().getResultColorString());
+                                tv.setBackgroundColor(adapter.getCommandSet().getResultColor());
                             }
                         });
                         Log.d("sahil", "r: " + r + " g: " + g + " b: " + b);

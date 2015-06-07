@@ -3,7 +3,7 @@ package ca.sahiljain.androidcodingchallenge;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class IPManager {
+class IPManager {
 
     private static final String PREFERENCES_KEY = "mySharedPrefs";
     private static final String IP_KEY = "serverIp";

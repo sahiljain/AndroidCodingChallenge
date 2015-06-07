@@ -18,10 +18,10 @@ import ca.sahiljain.androidcodingchallenge.models.CommandSet;
 
 public class MainActivity extends Activity {
 
-    MyListAdapter adapter;
-    ListView lv;
-    TextView tv;
-    SocketManager socketManager;
+    private MyListAdapter adapter;
+    private ListView lv;
+    private TextView tv;
+    private SocketManager socketManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

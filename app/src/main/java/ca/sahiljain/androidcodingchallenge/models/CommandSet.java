@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CommandSet {
-    private List<Command> commands;
+    private final List<Command> commands;
 
     public CommandSet() {
         commands = new LinkedList<>();
@@ -30,18 +30,6 @@ public class CommandSet {
 
     public void clear() {
         commands.clear();
-    }
-
-    private void recalculateActiveCommands() {
-        boolean absoluteFound = false;
-        for(int i = commands.size()-1; i >= 0; i--) {
-            Command c = commands.get(i);
-            if (absoluteFound) {
-                c.setActive(false);
-            } else if(c.getCommandType() == CommandType.Absolute && c.isActive()) {
-                absoluteFound = true;
-            }
-        }
     }
 
     public void toggleActive(int i) {
