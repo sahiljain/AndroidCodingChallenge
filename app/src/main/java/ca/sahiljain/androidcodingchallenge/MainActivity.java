@@ -63,9 +63,6 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             showIPDialog();
@@ -82,6 +79,7 @@ public class MainActivity extends Activity {
         builder.setPositiveButton(R.string.action_settings, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                adapter.getCommandSet().clear();
                 Dialog dialog = Dialog.class.cast(dialogInterface);
                 EditText et = (EditText) dialog.findViewById(R.id.ip_edit);
                 String ip = et.getText().toString();

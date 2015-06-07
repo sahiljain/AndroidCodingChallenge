@@ -17,16 +17,19 @@ public class CommandSet {
     }
 
     public void add(Command command) {
+        if (command == null) {
+            return;
+        }
+        if (command.getCommandType() == CommandType.Absolute) {
+            for (Command c : commands) {
+                c.setActive(false);
+            }
+        }
         commands.add(command);
-        recalculateActiveCommands();
     }
 
     public void clear() {
         commands.clear();
-    }
-
-    public int size() {
-        return commands.size();
     }
 
     private void recalculateActiveCommands() {
@@ -41,9 +44,20 @@ public class CommandSet {
         }
     }
 
-    public void setActive(int i, boolean b) {
-        commands.get(i).setActive(b);
-        recalculateActiveCommands();
+    public void toggleActive(int i) {
+        Command command = commands.get(i);
+        if (command.getCommandType() == CommandType.Absolute) {
+            if (!command.isActive()) {
+                for (Command c : commands) {
+                    if (c.getCommandType() == CommandType.Absolute) {
+                        c.setActive(false);
+                    }
+                }
+                command.setActive(true);
+            }
+        } else {
+            commands.get(i).setActive(!commands.get(i).isActive());
+        }
     }
 
     public boolean isEmpty() {

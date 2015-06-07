@@ -2,7 +2,6 @@ package ca.sahiljain.androidcodingchallenge;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,11 +60,10 @@ public class MyListAdapter extends ArrayAdapter<Command> {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                commandSet.setActive(i, !currentCommand.isActive());
+                commandSet.toggleActive(i);
                 TextView mainTextView = (TextView) ((Activity) context).findViewById(R.id.text_view);
                 mainTextView.setText(commandSet.getResultColorString());
                 notifyDataSetChanged();
-                Log.d("sahil", "view selected: " + currentCommand.isActive());
             }
         });
 

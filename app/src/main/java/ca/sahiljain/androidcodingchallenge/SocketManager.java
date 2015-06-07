@@ -3,14 +3,16 @@ package ca.sahiljain.androidcodingchallenge;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.net.SocketException;
 
 import ca.sahiljain.androidcodingchallenge.models.Command;
-import ca.sahiljain.androidcodingchallenge.models.CommandSet;
 import ca.sahiljain.androidcodingchallenge.models.CommandType;
 
 public class SocketManager {
@@ -44,7 +46,7 @@ public class SocketManager {
                     int r = 127;
                     int g = 127;
                     int b = 127;
-                    while(isActive && !socket.isClosed()) {
+                    while (isActive && socket != null && !socket.isClosed()) {
                         int in = dis.readByte();
                         Command c = null;
                         if (in == 1) {
@@ -73,6 +75,21 @@ public class SocketManager {
                         Log.d("sahil", "r: " + r + " g: " + g + " b: " + b);
 
                     }
+                } catch (EOFException e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(tv.getContext(), "END OF FILE", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } catch (SocketException e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            tv.setText("Socket Closed");
+                            adapter.getCommandSet().clear();
+                        }
+                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
