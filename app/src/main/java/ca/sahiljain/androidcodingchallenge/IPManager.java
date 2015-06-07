@@ -1,26 +1,23 @@
 package ca.sahiljain.androidcodingchallenge;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 
-/**
- * Created by Sahil Jain on 15/10/2014.
- */
 public class IPManager {
 
-    //private static final String PREFERENCES_KEY = "mySharedPrefs";
-    //private static final String IP_KEY = "serverIp";
-    private static String IP = "192.168.1.131";
+    private static final String PREFERENCES_KEY = "mySharedPrefs";
+    private static final String IP_KEY = "serverIp";
+//    private static String IP;// = "192.168.2.10";
 
-    public static String getIP() {
-        //SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
-        //String ip = prefs.getString(IP_KEY, "192.168.1.131");
-        return IP;
+    public static String getIP(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
+        return prefs.getString(IP_KEY, "");
     }
 
-    public static void setIP(String ip) {
-        //SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
-        //SharedPreferences.Editor editor = prefs.edit();
-        //editor.putString(IP_KEY, ip);
-        //editor.apply();
-        IP = ip;
+    public static void setIP(String ip, Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(IP_KEY, ip);
+        editor.commit();
     }
 }

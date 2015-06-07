@@ -1,8 +1,5 @@
 package ca.sahiljain.androidcodingchallenge;
 
-/**
- * Created by Sahil Jain on 16/10/2014.
- */
 /*
  * Copyright 2013 The Android Open Source Project
  *

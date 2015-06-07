@@ -9,9 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 
-/**
- * Created by Sahil Jain on 16/10/2014.
- */
 public class SocketManager {
     Socket socket = null;
     boolean isActive = false;

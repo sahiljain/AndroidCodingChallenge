@@ -12,9 +12,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by Sahil Jain on 15/10/2014.
- */
 public class MyListAdapter extends ArrayAdapter<Command> {
 
     private ListView mListView;
@@ -56,7 +53,6 @@ public class MyListAdapter extends ArrayAdapter<Command> {
         TextView tv = (TextView) view.findViewById(R.id.textView);
         setCheckBoxes();
         tv.setText(currentCommand.toString());
-
 
         TextView mainTextView = (TextView) ((Activity) context).findViewById(R.id.text_view);
         mainTextView.setText(ColorUtils.getColorString(commandList));

@@ -1,8 +1,5 @@
 package ca.sahiljain.androidcodingchallenge;
 
-/**
- * Created by Sahil Jain on 15/10/2014.
- */
 public class Command {
     private int r, g, b;
     private boolean isActive = true;

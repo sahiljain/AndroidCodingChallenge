@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
 
     MyListAdapter adapter;
+    ListView lv;
+    TextView tv;
     SocketManager socketManager;
 
     @Override
@@ -26,7 +29,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final ListView lv = (ListView) findViewById(R.id.list_view);
+        lv = (ListView) findViewById(R.id.list_view);
+        tv = (TextView) findViewById(R.id.text_view);
         adapter = new MyListAdapter(this, lv, new ArrayList<Command>());
         lv.setAdapter(adapter);
         lv.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
@@ -37,13 +41,19 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        final TextView tv = (TextView) findViewById(R.id.text_view);
-        socketManager.createSocketConnectionAndBeginRunnable(IPManager.getIP(), tv, adapter);
+
+        String ip = IPManager.getIP(this);
+        if (TextUtils.isEmpty(ip)) {
+            showIPDialog();
+        } else {
+            socketManager.createSocketConnectionAndBeginRunnable(ip, tv, adapter);
+        }
     }
 
     @Override
     protected void onPause() {
         socketManager.onPause();
+        adapter.commandList.clear();
         super.onPause();
     }
 
@@ -77,10 +87,9 @@ public class MainActivity extends Activity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 Dialog dialog = Dialog.class.cast(dialogInterface);
                 EditText et = (EditText) dialog.findViewById(R.id.ip_edit);
-                IPManager.setIP(et.getText().toString());
+                IPManager.setIP(et.getText().toString(), MainActivity.this);
                 socketManager.onPause();
-                final TextView tv = (TextView) findViewById(R.id.text_view);
-                socketManager.createSocketConnectionAndBeginRunnable(IPManager.getIP(), tv, adapter);
+                socketManager.createSocketConnectionAndBeginRunnable(IPManager.getIP(MainActivity.this), tv, adapter);
                 dialogInterface.dismiss();
             }
         });
