@@ -9,6 +9,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 
+import ca.sahiljain.androidcodingchallenge.models.Command;
+import ca.sahiljain.androidcodingchallenge.models.CommandSet;
+import ca.sahiljain.androidcodingchallenge.models.CommandType;
+
 public class SocketManager {
     Socket socket = null;
     boolean isActive = false;
@@ -62,8 +66,8 @@ public class SocketManager {
 
                             @Override
                             public void run() {
-                                tv.setText(ColorUtils.getColorString(adapter.commandList));
                                 adapter.addCommand(fc);
+                                tv.setText(adapter.getCommandSet().getResultColorString());
                             }
                         });
                         Log.d("sahil", "r: " + r + " g: " + g + " b: " + b);

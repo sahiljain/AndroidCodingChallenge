@@ -18,6 +18,7 @@
         <ListView
             android:layout_below="@id/text_view"
             android:id="@+id/list_view"
+            android:choiceMode="multipleChoice"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"/>
 

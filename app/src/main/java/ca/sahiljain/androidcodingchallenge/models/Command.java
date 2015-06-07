@@ -1,4 +1,4 @@
-package ca.sahiljain.androidcodingchallenge;
+package ca.sahiljain.androidcodingchallenge.models;
 
 public class Command {
     private int r, g, b;

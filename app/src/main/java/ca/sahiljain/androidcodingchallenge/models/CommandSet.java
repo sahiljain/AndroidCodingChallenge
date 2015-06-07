@@ -1,18 +1,59 @@
-package ca.sahiljain.androidcodingchallenge;
+package ca.sahiljain.androidcodingchallenge.models;
 
 import android.graphics.Color;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
-import ca.sahiljain.androidcodingchallenge.models.Command;
-import ca.sahiljain.androidcodingchallenge.models.CommandType;
+public class CommandSet {
+    private List<Command> commands;
 
-public class ColorUtils {
-    public static String getColorString(ArrayList<Command> commandList) {
+    public CommandSet() {
+        commands = new LinkedList<>();
+    }
 
+    public Command get(int i) {
+        return commands.get(i);
+    }
+
+    public void add(Command command) {
+        commands.add(command);
+        recalculateActiveCommands();
+    }
+
+    public void clear() {
+        commands.clear();
+    }
+
+    public int size() {
+        return commands.size();
+    }
+
+    private void recalculateActiveCommands() {
+        boolean absoluteFound = false;
+        for(int i = commands.size()-1; i >= 0; i--) {
+            Command c = commands.get(i);
+            if (absoluteFound) {
+                c.setActive(false);
+            } else if(c.getCommandType() == CommandType.Absolute && c.isActive()) {
+                absoluteFound = true;
+            }
+        }
+    }
+
+    public void setActive(int i, boolean b) {
+        commands.get(i).setActive(b);
+        recalculateActiveCommands();
+    }
+
+    public boolean isEmpty() {
+        return commands.isEmpty();
+    }
+
+    public String getResultColorString() {
         int rOffset = 0, gOffset = 0, bOffset = 0;
         int absoluteR = 127, absoluteG = 127, absoluteB = 127;
-        for(Command c : commandList) {
+        for(Command c : commands) {
             if (c.isActive()) {
                 if(c.getCommandType() == CommandType.Absolute) {
                     absoluteR = c.getR();
@@ -34,10 +75,10 @@ public class ColorUtils {
         return "r: " + absoluteR + " g: " + absoluteG + " b: " + absoluteB;
     }
 
-    public static int getColorInt(ArrayList<Command> commandList) {
+    public int getResultColor() {
         int rOffset = 0, gOffset = 0, bOffset = 0;
         int absoluteR = 127, absoluteG = 127, absoluteB = 127;
-        for(Command c : commandList) {
+        for(Command c : commands) {
             if (c.isActive()) {
                 if(c.getCommandType() == CommandType.Absolute) {
                     absoluteR = c.getR();
@@ -59,4 +100,7 @@ public class ColorUtils {
         return Color.rgb(absoluteR, absoluteG, absoluteB);
     }
 
+    public List<Command> getList() {
+        return commands;
+    }
 }

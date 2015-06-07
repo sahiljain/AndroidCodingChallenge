@@ -9,12 +9,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import ca.sahiljain.androidcodingchallenge.models.CommandSet;
 
 
 public class MainActivity extends Activity {
@@ -31,11 +30,9 @@ public class MainActivity extends Activity {
 
         lv = (ListView) findViewById(R.id.list_view);
         tv = (TextView) findViewById(R.id.text_view);
-        adapter = new MyListAdapter(this, lv, new ArrayList<Command>());
+        adapter = new MyListAdapter(this, lv, new CommandSet());
         lv.setAdapter(adapter);
-        lv.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         socketManager = new SocketManager();
-
     }
 
     @Override
@@ -53,7 +50,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         socketManager.onPause();
-        adapter.commandList.clear();
+        adapter.getCommandSet().clear();
         super.onPause();
     }
 
@@ -87,9 +84,10 @@ public class MainActivity extends Activity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 Dialog dialog = Dialog.class.cast(dialogInterface);
                 EditText et = (EditText) dialog.findViewById(R.id.ip_edit);
-                IPManager.setIP(et.getText().toString(), MainActivity.this);
+                String ip = et.getText().toString();
+                IPManager.setIP(ip, MainActivity.this);
                 socketManager.onPause();
-                socketManager.createSocketConnectionAndBeginRunnable(IPManager.getIP(MainActivity.this), tv, adapter);
+                socketManager.createSocketConnectionAndBeginRunnable(ip, tv, adapter);
                 dialogInterface.dismiss();
             }
         });

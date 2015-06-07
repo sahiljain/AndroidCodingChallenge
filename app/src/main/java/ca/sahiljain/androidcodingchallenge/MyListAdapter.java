@@ -10,31 +10,35 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import ca.sahiljain.androidcodingchallenge.models.Command;
+import ca.sahiljain.androidcodingchallenge.models.CommandSet;
 
 public class MyListAdapter extends ArrayAdapter<Command> {
 
     private ListView mListView;
 
-    ArrayList<Command> commandList;
+    private CommandSet commandSet;
     private Context context;
 
-    public MyListAdapter(Context context, ListView lv, ArrayList<Command> list) {
-        super(context, R.layout.list_item, list);
+    public MyListAdapter(Context context, ListView lv, CommandSet commandSet) {
+        super(context, R.layout.list_item, commandSet.getList());
         this.context = context;
-        commandList = list;
+        this.commandSet = commandSet;
         mListView = lv;
     }
 
     public void addCommand(Command c) {
-        commandList.add(c);
-        recalculateActiveCommands();
+        commandSet.add(c);
         notifyDataSetChanged();
+    }
+
+    public CommandSet getCommandSet() {
+        return commandSet;
     }
 
     @Override
     public Command getItem(int i) {
-        return commandList.get(i);
+        return commandSet.get(i);
     }
 
     @Override
@@ -44,53 +48,28 @@ public class MyListAdapter extends ArrayAdapter<Command> {
 
     @Override
     public View getView(final int i, View view, final ViewGroup viewGroup) {
-        final Command currentCommand = commandList.get(i);
+        final Command currentCommand = commandSet.get(i);
 
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.list_item, null);
         }
+        mListView.setItemChecked(i, currentCommand.isActive());
 
         TextView tv = (TextView) view.findViewById(R.id.textView);
-        setCheckBoxes();
         tv.setText(currentCommand.toString());
-
-        TextView mainTextView = (TextView) ((Activity) context).findViewById(R.id.text_view);
-        mainTextView.setText(ColorUtils.getColorString(commandList));
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currentCommand.setActive(!currentCommand.isActive());
-                recalculateActiveCommands();
-                setCheckBoxes();
+                commandSet.setActive(i, !currentCommand.isActive());
                 TextView mainTextView = (TextView) ((Activity) context).findViewById(R.id.text_view);
-                mainTextView.setText(ColorUtils.getColorString(commandList));
+                mainTextView.setText(commandSet.getResultColorString());
                 notifyDataSetChanged();
                 Log.d("sahil", "view selected: " + currentCommand.isActive());
             }
         });
 
         return view;
-    }
-
-    private void setCheckBoxes() {
-        for(int x = 0; x < commandList.size(); x++) {
-            mListView.setItemChecked(x, commandList.get(x).isActive());
-        }
-    }
-
-    private void recalculateActiveCommands() {
-        boolean absoluteFound = false;
-        for(int i = commandList.size()-1; i >= 0; i--) {
-            Command c = commandList.get(i);
-            if(c.getCommandType() == CommandType.Absolute && c.isActive()) {
-                if(absoluteFound) {
-                    c.setActive(false);
-                } else {
-                    absoluteFound = true;
-                }
-            }
-        }
     }
 
     @Override
@@ -105,6 +84,6 @@ public class MyListAdapter extends ArrayAdapter<Command> {
 
     @Override
     public boolean isEmpty() {
-        return commandList.size() == 0;
+        return commandSet.isEmpty();
     }
 }

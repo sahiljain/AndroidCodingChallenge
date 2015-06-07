@@ -7,7 +7,6 @@ public class IPManager {
 
     private static final String PREFERENCES_KEY = "mySharedPrefs";
     private static final String IP_KEY = "serverIp";
-//    private static String IP;// = "192.168.2.10";
 
     public static String getIP(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
@@ -18,6 +17,6 @@ public class IPManager {
         SharedPreferences prefs = context.getSharedPreferences(PREFERENCES_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(IP_KEY, ip);
-        editor.commit();
+        editor.apply();
     }
 }
