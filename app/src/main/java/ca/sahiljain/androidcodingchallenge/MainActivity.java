@@ -19,8 +19,7 @@ import ca.sahiljain.androidcodingchallenge.models.CommandSet;
 public class MainActivity extends Activity {
 
     private MyListAdapter adapter;
-    private ListView lv;
-    private TextView tv;
+    private TextView mainTextView;
     private SocketManager socketManager;
 
     @Override
@@ -28,22 +27,21 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lv = (ListView) findViewById(R.id.list_view);
-        tv = (TextView) findViewById(R.id.text_view);
-        adapter = new MyListAdapter(this, lv, new CommandSet());
-        lv.setAdapter(adapter);
+        ListView listView = (ListView) findViewById(R.id.list_view);
+        mainTextView = (TextView) findViewById(R.id.text_view);
+        adapter = new MyListAdapter(this, listView, new CommandSet());
+        listView.setAdapter(adapter);
         socketManager = new SocketManager();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         String ip = IPManager.getIP(this);
         if (TextUtils.isEmpty(ip)) {
             showIPDialog();
         } else {
-            socketManager.createSocketConnectionAndBeginRunnable(ip, tv, adapter);
+            socketManager.createSocketConnectionAndBeginRunnable(ip, mainTextView, adapter);
         }
     }
 
@@ -85,7 +83,7 @@ public class MainActivity extends Activity {
                 String ip = et.getText().toString();
                 IPManager.setIP(ip, MainActivity.this);
                 socketManager.onPause();
-                socketManager.createSocketConnectionAndBeginRunnable(ip, tv, adapter);
+                socketManager.createSocketConnectionAndBeginRunnable(ip, mainTextView, adapter);
                 dialogInterface.dismiss();
             }
         });

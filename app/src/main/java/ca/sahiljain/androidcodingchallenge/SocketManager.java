@@ -19,7 +19,7 @@ class SocketManager {
     Socket socket = null;
     boolean isActive = false;
 
-    public void createSocketConnectionAndBeginRunnable(final String ip, final TextView tv, final MyListAdapter adapter) {
+    public void createSocketConnectionAndBeginRunnable(final String ip, final TextView headerTextView, final MyListAdapter adapter) {
         final Handler handler = new Handler();
 
         Thread thread = new Thread(new Runnable() {
@@ -69,8 +69,8 @@ class SocketManager {
                             @Override
                             public void run() {
                                 adapter.addCommand(fc);
-                                tv.setText(adapter.getCommandSet().getResultColorString());
-                                tv.setBackgroundColor(adapter.getCommandSet().getResultColor());
+                                headerTextView.setText(adapter.getCommandSet().getResultColorString());
+                                headerTextView.setBackgroundColor(adapter.getCommandSet().getResultColor());
                             }
                         });
                         Log.d("sahil", "r: " + r + " g: " + g + " b: " + b);
@@ -80,14 +80,14 @@ class SocketManager {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(tv.getContext(), "END OF FILE", Toast.LENGTH_LONG).show();
+                            Toast.makeText(headerTextView.getContext(), "END OF FILE", Toast.LENGTH_LONG).show();
                         }
                     });
                 } catch (SocketException e) {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            tv.setText("Socket Closed");
+                            headerTextView.setText("Socket Closed");
                             adapter.getCommandSet().clear();
                         }
                     });

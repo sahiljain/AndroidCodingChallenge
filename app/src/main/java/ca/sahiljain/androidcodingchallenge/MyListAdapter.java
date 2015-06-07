@@ -16,28 +16,28 @@ class MyListAdapter extends ArrayAdapter<Command> implements View.OnClickListene
 
     private final ListView mListView;
 
-    private final CommandSet commandSet;
-    private final Context context;
+    private final CommandSet mCommandSet;
+    private final Context mContext;
 
     public MyListAdapter(Context context, ListView lv, CommandSet commandSet) {
         super(context, R.layout.list_item, commandSet.getList());
-        this.context = context;
-        this.commandSet = commandSet;
+        this.mContext = context;
+        this.mCommandSet = commandSet;
         mListView = lv;
     }
 
     public void addCommand(Command c) {
-        commandSet.add(c);
+        mCommandSet.add(c);
         notifyDataSetChanged();
     }
 
     public CommandSet getCommandSet() {
-        return commandSet;
+        return mCommandSet;
     }
 
     @Override
     public Command getItem(int i) {
-        return commandSet.get(i);
+        return mCommandSet.get(i);
     }
 
     @Override
@@ -47,10 +47,10 @@ class MyListAdapter extends ArrayAdapter<Command> implements View.OnClickListene
 
     @Override
     public View getView(final int i, View view, final ViewGroup viewGroup) {
-        final Command currentCommand = commandSet.get(i);
+        final Command currentCommand = mCommandSet.get(i);
 
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.list_item, null);
+            view = LayoutInflater.from(mContext).inflate(R.layout.list_item, null);
         }
         mListView.setItemChecked(i, currentCommand.isActive());
 
@@ -73,15 +73,15 @@ class MyListAdapter extends ArrayAdapter<Command> implements View.OnClickListene
 
     @Override
     public boolean isEmpty() {
-        return commandSet.isEmpty();
+        return mCommandSet.isEmpty();
     }
 
     @Override
     public void onClick(View view) {
-        commandSet.toggleActive((Integer) view.getTag(R.id.command_id));
-        TextView mainTextView = (TextView) ((Activity) context).findViewById(R.id.text_view);
-        mainTextView.setText(commandSet.getResultColorString());
-        mainTextView.setBackgroundColor(commandSet.getResultColor());
+        mCommandSet.toggleActive((Integer) view.getTag(R.id.command_id));
+        TextView mainTextView = (TextView) ((Activity) mContext).findViewById(R.id.text_view);
+        mainTextView.setText(mCommandSet.getResultColorString());
+        mainTextView.setBackgroundColor(mCommandSet.getResultColor());
         notifyDataSetChanged();
     }
 }
